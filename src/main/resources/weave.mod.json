@@ -1,0 +1,10 @@
+{
+  "mixinConfigs": [
+    "peacefulmining.mixins.json"
+  ],
+  "entrypoints": [
+    "me.lily.peacefulmining.Mod"
+  ],
+  "hooks": [
+  ]
+}
