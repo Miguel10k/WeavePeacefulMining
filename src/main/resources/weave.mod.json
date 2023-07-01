@@ -6,5 +6,7 @@
     "me.lily.peacefulmining.Mod"
   ],
   "hooks": [
-  ]
+  ],
+  "name": "Peaceful Mining",
+  "modId": "peaceful-mining"
 }
