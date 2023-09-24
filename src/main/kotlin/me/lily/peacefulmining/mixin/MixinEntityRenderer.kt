@@ -10,6 +10,7 @@ import net.minecraft.util.MovingObjectPosition
 import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.injection.At
 import org.spongepowered.asm.mixin.injection.Redirect
+import org.lwjgl.input.Mouse
 
 @Mixin(EntityRenderer::class)
 class MixinEntityRenderer {
@@ -25,10 +26,10 @@ class MixinEntityRenderer {
         val minecraft = Minecraft.getMinecraft()
         val player = minecraft.thePlayer
 
-        if (Mod.enabled &&
+        if (Mod.enabled && Mouse.isButtonDown(0) &&
             minecraft.objectMouseOver != null &&
             minecraft.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK &&
-            (player?.heldItem?.item is ItemPickaxe || 
+            (player?.heldItem?.item is ItemPickaxe ||
              player?.heldItem?.item is ItemShears ||
              player?.heldItem?.item is ItemAxe)) {
             return 0
