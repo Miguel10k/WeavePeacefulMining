@@ -4,6 +4,7 @@ import me.lily.peacefulmining.Mod
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.EntityRenderer
 import net.minecraft.item.ItemPickaxe
+import net.minecraft.item.ItemShears // Import ItemShears
 import net.minecraft.util.MovingObjectPosition
 import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.injection.At
@@ -20,14 +21,15 @@ class MixinEntityRenderer {
         )
     )
     fun skipEntityLoop(instance: List<*>?): Int {
-        if(Mod.enabled &&
-            Minecraft.getMinecraft().objectMouseOver != null &&
-            Minecraft.getMinecraft().objectMouseOver.typeOfHit
-            == MovingObjectPosition.MovingObjectType.BLOCK &&
-                Minecraft.getMinecraft().thePlayer?.heldItem?.getItem() is ItemPickaxe) {
+        val minecraft = Minecraft.getMinecraft()
+        val player = minecraft.thePlayer
+
+        if (Mod.enabled &&
+            minecraft.objectMouseOver != null &&
+            minecraft.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK &&
+            (player?.heldItem?.item is ItemPickaxe || player?.heldItem?.item is ItemShears)) {
             return 0
         }
         return instance!!.size
     }
-
 }
