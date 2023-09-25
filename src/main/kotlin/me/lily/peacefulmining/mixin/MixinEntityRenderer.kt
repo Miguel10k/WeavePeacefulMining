@@ -3,9 +3,9 @@ package me.lily.peacefulmining.mixin
 import me.lily.peacefulmining.Mod
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.EntityRenderer
+import net.minecraft.item.ItemAxe
 import net.minecraft.item.ItemPickaxe
 import net.minecraft.item.ItemShears
-import net.minecraft.item.ItemAxe
 import net.minecraft.item.ItemSpade
 import net.minecraft.util.MovingObjectPosition
 import org.spongepowered.asm.mixin.Mixin
@@ -27,14 +27,19 @@ class MixinEntityRenderer {
         val minecraft = Minecraft.getMinecraft()
         val player = minecraft.thePlayer
 
-        if (Mod.enabled && Mouse.isButtonDown(0) &&
-            minecraft.objectMouseOver != null &&
-            minecraft.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK &&
-            (player?.heldItem?.item is ItemPickaxe ||
-             player?.heldItem?.item is ItemShears ||
-             player?.heldItem?.item is ItemAxe ||
-             player?.heldItem?.item is ItemSpade)) {
-            return 0
+        if (Mod.enabled && minecraft.objectMouseOver != null) {
+            val typeOfHit = minecraft.objectMouseOver.typeOfHit
+            val isRightClick = Mouse.isButtonDown(1)
+
+            if ((typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && !isRightClick) ||
+                (typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && isRightClick)) {
+                if (player?.heldItem?.item is ItemPickaxe ||
+                    player?.heldItem?.item is ItemShears ||
+                    player?.heldItem?.item is ItemAxe ||
+                    player?.heldItem?.item is ItemSpade) {
+                    return 0
+                }
+            }
         }
         return instance!!.size
     }
